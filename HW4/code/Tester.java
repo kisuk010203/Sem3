@@ -16,7 +16,6 @@ public class Tester {
     static final int sortingNum = 6;
     static final boolean[] doEachSorting = new boolean[sortingNum];
 
-
     public static void main(String[] args) {
 
         System.out.println();
@@ -35,18 +34,19 @@ public class Tester {
         int[] arr2 = SortingTest.DoRadixSort(arr1);
         printArrBySpace(arr2, "arr2");
 
-
-        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        //@FIXME
+        // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        // @FIXME
 
         final boolean doTest = true;
 
-        testNum = 16;               //  should bigger than (edge = 3) { 16, 128, 1024 }
-        CAPACITY = 10000;            //  { 16, 1024, 4096, 16384, 65536, 262114, 1048576, 16777216 } : 4, 10, 12, 14, 16, 18, 20, 24
-        rMin = -9;                 //  { 0, 1, 9, 99, 999, 9999, 99999, 999999, 9999999, 99999999, (2147483648-1)/2 } : 1, 1, 1, 2, 3, 4, 5, 6, 7, 8 2^31
+        testNum = 16; // should bigger than (edge = 3) { 16, 128, 1024 }
+        CAPACITY = 10000; // { 16, 1024, 4096, 16384, 65536, 262114, 1048576, 16777216 } : 4, 10, 12, 14,
+                          // 16, 18, 20, 24
+        rMin = -9; // { 0, 1, 9, 99, 999, 9999, 99999, 999999, 9999999, 99999999, (2147483648-1)/2
+                   // } : 1, 1, 1, 2, 3, 4, 5, 6, 7, 8 2^31
         rMax = 9;
-        final String whichSort = "Q";      // "BIHMQR"
-        applyWhichSort(whichSort);              // fix doEachSorting[]
+        final String whichSort = "Q"; // "BIHMQR"
+        applyWhichSort(whichSort); // fix doEachSorting[]
 
         Random random1 = new Random();
         final boolean cheat = false;
@@ -61,7 +61,7 @@ public class Tester {
             System.arraycopy(sortedCheatArr, 0, cheatArr, 0, CAPACITY - 10000);
         }
 
-        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
         long[][] runTimes = new long[0][0];
         System.out.println();
@@ -86,14 +86,14 @@ public class Tester {
 
             // test for each testCases
             for (int t = 0; t < testNum; t++) {
-                //System.out.printf("now sorting %dth test...\n", t);
+                // System.out.printf("now sorting %dth test...\n", t);
 
                 Random random2 = new Random();
                 int[] arr0 = new int[CAPACITY];
 
-                for (int i = 0; i < arr0.length; i++){
+                for (int i = 0; i < arr0.length; i++) {
                     arr0[i] = arr0.length - i;
-                    
+
                 }
 
                 if (cheat) {
@@ -168,8 +168,7 @@ public class Tester {
                         runTimes[5][t] = currTime - prevTime;
                     }
 
-                }           // end if(doSorting)
-
+                } // end if(doSorting)
 
                 // check the sorted array, if arr is not sorted well, return main()
                 if (checkSort && doSort) {
@@ -187,7 +186,8 @@ public class Tester {
                             if (doEachSorting[i]) {
                                 if (!isSorted(sortedArrays.get(i), 0, CAPACITY)) {
                                     errIdx = i;
-                                    throw new MyException(String.format("sort %c is incorrect", sortingOrderStr.charAt(i)));
+                                    throw new MyException(
+                                            String.format("sort %c is incorrect", sortingOrderStr.charAt(i)));
                                 }
                             }
                         }
@@ -210,11 +210,11 @@ public class Tester {
                             return;
                         }
                     }
-                }           // end if(checkSort)
+                } // end if(checkSort)
 
-                //System.out.printf("%dth test done\n", t);
+                // System.out.printf("%dth test done\n", t);
 
-            }   // end for(t), each testCases
+            } // end for(t), each testCases
 
             // if for(t) end without exception, all sorting is completed
             if (doSort) {
@@ -224,7 +224,7 @@ public class Tester {
                 System.out.println();
             }
 
-        }   // end if(doTest)
+        } // end if(doTest)
 
         // print test result
         if (printResult && doTest) {
@@ -233,8 +233,10 @@ public class Tester {
                 // print test info
                 boolean printTestInfo = true;
                 if (printTestInfo) {
-                    System.out.printf("##testInfo : doSort=%s, checkSort=%s, printResult=%s\n", doSort, checkSort, printResult);
-                    System.out.printf("testNum=%d, capacity=%d, range=%d~%d, cheat=%s\n", testNum, CAPACITY, rMin, rMax, cheat);
+                    System.out.printf("##testInfo : doSort=%s, checkSort=%s, printResult=%s\n", doSort, checkSort,
+                            printResult);
+                    System.out.printf("testNum=%d, capacity=%d, range=%d~%d, cheat=%s\n", testNum, CAPACITY, rMin, rMax,
+                            cheat);
                     for (int i = 0; i < sortingNum; i++)
                         System.out.printf("%c: %s, ", sortingOrderStr.charAt(i), doEachSorting[i]);
                     System.out.println();
@@ -274,7 +276,8 @@ public class Tester {
 
                     System.out.println("##statistics");
                     System.out.printf("(discard first %d values)\n", edge);
-                    System.out.printf("%-15s %-15s %-15s %-15s %-15s\n", "sort type", "avg[ms]", "sd[ms]", "min[ms]", "max[ms]");
+                    System.out.printf("%-15s %-15s %-15s %-15s %-15s\n", "sort type", "avg[ms]", "sd[ms]", "min[ms]",
+                            "max[ms]");
 
                     long sum;
                     double avg, var, sd;
@@ -304,23 +307,23 @@ public class Tester {
                             }
                             sd = Math.pow(var / (testNum - edge), 0.5);
 
-                            System.out.printf("%-15s %-15.2f %-15.2f %-15d %-15d\n", sortingOrderStr.charAt(s) + " sort :", avg, sd, min, max);
+                            System.out.printf("%-15s %-15.2f %-15.2f %-15d %-15d\n",
+                                    sortingOrderStr.charAt(s) + " sort :", avg, sd, min, max);
                         }
 
                     }
                     System.out.println();
 
-                }   // end if(printStatistics)
+                } // end if(printStatistics)
             }
 
-
-        }   // end if(printTestResult)
+        } // end if(printTestResult)
 
         System.out.println();
         System.out.println("================================");
         System.out.println("####main() end without errors");
 
-    }   // end main
+    } // end main
 
     private static boolean isSorted(int[] sortedArr, int start, int end) throws MyException {
 
