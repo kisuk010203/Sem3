@@ -1,0 +1,121 @@
+import java.util.*;
+
+class SubwayStation {
+    private String name;
+    private String code;
+    private int transferTime;
+
+    public SubwayStation(String name, String code, int transferTime) {
+        this.name = name;
+        this.code = code;
+        this.transferTime = transferTime;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public int getTransferTime() {
+        return transferTime;
+    }
+}
+
+class SubwayEdge {
+    private SubwayStation start;
+    private SubwayStation end;
+    private int duration;
+
+    public SubwayEdge(SubwayStation start, SubwayStation end, int duration) {
+        this.start = start;
+        this.end = end;
+        this.duration = duration;
+    }
+
+    public SubwayStation getStart() {
+        return start;
+    }
+
+    public SubwayStation getEnd() {
+        return end;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+}
+
+public class SubwayNetwork {
+    private Map<SubwayStation, List<SubwayEdge>> adjacencyList;
+
+    public SubwayNetwork() {
+        adjacencyList = new HashMap<>();
+    }
+
+    public void addEdge(SubwayStation start, SubwayStation end, int duration) {
+        SubwayEdge edge = new SubwayEdge(start, end, duration);
+        adjacencyList.computeIfAbsent(start, k -> new ArrayList<>()).add(edge);
+    }
+
+    public List<SubwayEdge> getEdges(SubwayStation station) {
+        return adjacencyList.getOrDefault(station, new ArrayList<>());
+    }
+
+    public int getTransferTime(SubwayStation station) {
+        return station.getTransferTime();
+    }
+
+    public Map<SubwayStation, Integer> findShortestDurations(SubwayStation source) {
+        Map<SubwayStation, Integer> distances = new HashMap<>();
+        PriorityQueue<SubwayStation> pq = new PriorityQueue<>(Comparator.comparingInt(distances::getOrDefault));
+
+        for (SubwayStation station : adjacencyList.keySet()) {
+            distances.put(station, Integer.MAX_VALUE);
+        }
+
+        distances.put(source, 0);
+        pq.offer(source);
+
+        while (!pq.isEmpty()) {
+            SubwayStation currentStation = pq.poll();
+
+            for (SubwayEdge edge : adjacencyList.getOrDefault(currentStation, new ArrayList<>())) {
+                SubwayStation neighbor = edge.getEnd();
+                int durationFromSource = distances.get(currentStation) + edge.getDuration() + getTransferTime(neighbor);
+
+                if (durationFromSource < distances.getOrDefault(neighbor, Integer.MAX_VALUE)) {
+                    distances.put(neighbor, durationFromSource);
+                    pq.offer(neighbor);
+                }
+            }
+        }
+
+        return distances;
+    }
+
+    public static void main(String[] args) {
+        SubwayNetwork network = new SubwayNetwork();
+
+        // Add stations and edges
+        SubwayStation stationA = new SubwayStation("Station A", "A", 5);
+        SubwayStation stationB = new SubwayStation("Station B", "B", 3);
+        SubwayStation stationC = new SubwayStation("Station C", "C", 2);
+        SubwayStation stationD = new SubwayStation("Station D", "D", 4);
+
+        network.addEdge(stationA, stationB, 10);
+        network.addEdge(stationA, stationC, 5);
+        network.addEdge(stationB, stationC, 2);
+        network.addEdge(stationC, stationD, 4);
+
+        // Find shortest durations from a source station
+        SubwayStation sourceStation = stationA;
+        Map<SubwayStation, Integer> shortestDurations = network.findShortestDurations(sourceStation);
+
+        // Print the shortest durations
+        for (SubwayStation station : shortestDurations)
+            System.out.println(station.name);
+    }
+}
